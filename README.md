@@ -15,6 +15,13 @@
   <a href="https://t.me/sevcator/909">💸 Donate</a>
 </div>
 
+# Notice!
+DNSCrypt support is deprecated in favor of GeoHideDNS:
+
+1. Install [bindhosts](https://github.com/bindhosts/bindhosts), I recommend using mode 10 for KernelSU. (it's compatible with SuSFS v2)
+2. Install [AdAway](https://f-droid.org/ru/packages/org.adaway/), give root rights.
+3. Add this [source](https://raw.githubusercontent.com/Internet-Helper/GeoHideDNS/refs/heads/main/hosts/hosts) to access restricted content.
+
 # License
 This project is licensed. See the [LICENSE](https://github.com/sevcator/zapret-pocket/blob/main/LICENSE) file for details.
 

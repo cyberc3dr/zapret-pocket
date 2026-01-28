@@ -47,9 +47,7 @@ for pid in $(pgrep -f "$MODPATH" 2>/dev/null || true); do
     safe_kill "$pid"
 done
 
-kill_by_pattern "dnscrypt-proxy" name
 kill_by_pattern "nfqws" name
-kill_by_pattern "$MODPATH/dnscrypt/dnscrypt.sh" full
 kill_by_pattern "$MODPATH/zapret/zapret.sh" full
 kill_by_pattern "make-unkillable.sh" full
 
@@ -110,7 +108,5 @@ for chain in PREROUTING POSTROUTING; do
     remove_rules_matching iptables mangle "$chain" "NFQUEUE num 200"
     remove_rules_matching ip6tables mangle "$chain" "NFQUEUE num 200"
 done
-
-sh "$MODPATH/dnscrypt/custom-files.sh" disappend > /dev/null 2>&1 || true
 
 exit 0

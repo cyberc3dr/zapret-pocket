@@ -34,13 +34,6 @@ read_link_config() {
 }
 
 CURRENTSTRATEGY=$(cat "$MODPATH/config/current-strategy" 2>/dev/null || echo "Unknown")
-DNSCRYPTENABLE=$(cat "$MODPATH/config/dnscrypt-enable" 2>/dev/null || echo "0")
-CLOAKINGUPDATE=$(cat "$MODPATH/config/dnscrypt-cloaking-rules-update" 2>/dev/null || echo "0")
-CLOAKINGRULESLINK=$(read_link_config "https://raw.githubusercontent.com/sevcator/dnscrypt-proxy-stuff/refs/heads/main/cloaking-rules.txt" dnscrypt-cloaking-rules-link custom-cloaking-rules-url)
-BLOCKEDUPDATE=$(cat "$MODPATH/config/dnscrypt-blocked-names-update" 2>/dev/null || echo "0")
-BLOCKEDNAMESLINK=$(read_link_config "https://raw.githubusercontent.com/sevcator/dnscrypt-proxy-stuff/refs/heads/main/blocked-yandex.txt" dnscrypt-blocked-names-link custom-blocked-names-url)
-BLOCKEDIPSUPDATE=$(cat "$MODPATH/config/dnscrypt-blocked-ips-update" 2>/dev/null || echo "0")
-BLOCKEDIPSLINK=$(read_link_config "https://raw.githubusercontent.com/sevcator/dnscrypt-proxy-stuff/refs/heads/main/blocked-ips.txt" dnscrypt-blocked-ips-link custom-blocked-ips-url)
 UPDATEONSTART=$(cat "$MODPATH/config/update-on-start" 2>/dev/null || echo "1")
 CUSTOMLINKIPSETV4=$(read_link_config "https://raw.githubusercontent.com/sevcator/zapret-lists/refs/heads/main/ipset-v4.txt" ipset-v4-link custom-ipv4-ranges-url)
 CUSTOMLINKIPSETV6=$(read_link_config "https://raw.githubusercontent.com/sevcator/zapret-lists/refs/heads/main/ipset-v6.txt" ipset-v6-link custom-ipv6-ranges-url)
@@ -57,11 +50,7 @@ command_info() {
     else
         echo "! Update on start disabled"
     fi
-    if [ "$CLOAKINGUPDATE" = "1" ]; then
-        echo "! DNSCrypt cloaking rules auto-update enabled"
-    else
-        echo "! DNSCrypt cloaking rules auto-update disabled"
-    fi
+
     if [ "$IPV6ENABLE" = "1" ]; then
         echo "! IPv6 enabled"
     else
@@ -91,7 +80,7 @@ command_info() {
     echo "  import-strategy - Import strategy from URL"
     echo "  cloaking  - Add/remove custom hosts"
     echo "  exclude  - Add/remove exclude list/ipset"
-    echo "  clear-dnscrypt-files - Clear DNSCrypt lists and refresh blocked IPs"
+
     return 0
 }
 
@@ -164,13 +153,7 @@ setup() {
         y|yes) echo "- Enabled"; BYPASSCALLS="1" ;;
     esac
 
-    if [ "$IPV6ENABLE" != "1" ]; then
-        echo -n "- Enable DNSCrypt? "
-        read response
-        case "$(echo "$response" | tr A-Z a-z)" in
-            y|yes) echo "- Enabled"; DNSCRYPTENABLE="1" ;;
-        esac
-    fi
+
 
     echo "- Available strategies:"
     find "$MODPATH/strategy" -type f -name "*.sh" 2>/dev/null | while IFS= read -r file; do
@@ -221,72 +204,8 @@ setup() {
             ;;
         esac
     fi
-    
-    if [ "$IPV6ENABLE" != "1" ] && [ "$DNSCRYPTENABLE" = "1" ]; then
-        echo -n "- Auto-update cloaking rules for DNSCrypt? "
-        read resp
-        case "$(echo "$resp" | tr A-Z a-z)" in
-            y|yes) CLOAKINGUPDATE="1"; echo "- Enabled" ;;
-        esac
 
-        echo -n "- Auto-update blocked names for DNSCrypt? "
-        read resp
-        case "$(echo "$resp" | tr A-Z a-z)" in
-            y|yes) BLOCKEDUPDATE="1"; echo "- Enabled" ;;
-        esac
-
-        echo -n "- Auto-update blocked IPs for DNSCrypt? "
-        read resp
-        case "$(echo "$resp" | tr A-Z a-z)" in
-            y|yes) BLOCKEDIPSUPDATE="1"; echo "- Enabled" ;;
-        esac
-
-        echo -n "- Do you want to change source links for update DNSCrypt files? "
-        read resp2
-        case "$(echo "$resp2" | tr A-Z a-z)" in
-            y|yes)
-                echo "! Supported filenames: cloaking-rules.txt, blocked-ips.txt, allowed-names.txt, allowed-ips.txt"
-                echo -n "- Enter link to cloaking-rules.txt (leave blank to keep current): "
-                read new_cloaking
-                if [ -n "$new_cloaking" ]; then
-                    CLOAKINGRULESLINK="$new_cloaking"
-                    echo "- Link updated"
-                else
-                    echo "- Keeping old link: $CLOAKINGRULESLINK"
-                fi
-
-                echo -n "- Enter link to blocked-names.txt (leave blank to keep current): "
-                read new_blocking
-                if [ -n "$new_blocking" ]; then
-                    BLOCKEDNAMESLINK="$new_blocking"
-                    echo "- Link updated"
-                else
-                    echo "- Keeping old link: $BLOCKEDNAMESLINK"
-                fi
-
-                echo -n "- Enter link to blocked-ips.txt (leave blank to keep current): "
-                read new_blocked_ips
-                if [ -n "$new_blocked_ips" ]; then
-                    BLOCKEDIPSLINK="$new_blocked_ips"
-                    echo "- Link updated"
-                else
-                    echo "- Keeping old link: $BLOCKEDIPSLINK"
-                fi
-            ;;
-        esac
-    fi
-
-    echo "$DNSCRYPTENABLE" > "$MODPATH/config/dnscrypt-enable"
     echo "$user_strategy" > "$MODPATH/config/current-strategy"
-    echo "$CLOAKINGUPDATE" > "$MODPATH/config/dnscrypt-cloaking-rules-update"
-    echo "$CLOAKINGRULESLINK" > "$MODPATH/config/dnscrypt-cloaking-rules-link"
-    rm -f "$MODPATH/config/custom-cloaking-rules-url"
-    echo "$BLOCKEDUPDATE" > "$MODPATH/config/dnscrypt-blocked-names-update"
-    echo "$BLOCKEDNAMESLINK" > "$MODPATH/config/dnscrypt-blocked-names-link"
-    rm -f "$MODPATH/config/custom-blocked-names-url"
-    echo "$BLOCKEDIPSUPDATE" > "$MODPATH/config/dnscrypt-blocked-ips-update"
-    echo "$BLOCKEDIPSLINK" > "$MODPATH/config/dnscrypt-blocked-ips-link"
-    rm -f "$MODPATH/config/custom-blocked-ips-url"
     echo "$UPDATEONSTART" > "$MODPATH/config/update-on-start"
     echo "$CUSTOMLINKIPSETV4" > "$MODPATH/config/ipset-v4-link"
     rm -f "$MODPATH/config/custom-ipv4-ranges-url"
@@ -439,84 +358,6 @@ exclude() {
     return 0
 }
 
-cloaking() {
-    val1="$1"
-    val2="$2"
-
-    CLOAKING_FILE="$MODPATH/dnscrypt/custom-cloaking-rules.txt"
-    GLOBAL_CLOAKING_FILE="$MODPATH/dnscrypt/cloaking-rules.txt"
-
-    if [ -z "$val1" ]; then
-        echo "! Usage: cloaking <domain> [replacement]"
-        return 1
-    fi
-
-    mkdir -p "$(dirname "$CLOAKING_FILE")"
-    touch "$CLOAKING_FILE"
-
-    if [ -z "$val2" ]; then
-        if grep -E -q "^($val1|\S+\.$val1)\s+" "$CLOAKING_FILE"; then
-            sed -i -E "\|^($val1|\S+\.$val1)\s+.*$|d" "$CLOAKING_FILE"
-            echo "- Removed"
-        else
-            echo "! Nothing to remove"
-        fi
-        return 0
-    fi
-
-    line="$val1 $val2"
-
-    if grep -Fxq "$line" "$CLOAKING_FILE"; then
-        grep -Fxv "$line" "$CLOAKING_FILE" > "$CLOAKING_FILE.tmp" && mv "$CLOAKING_FILE.tmp" "$CLOAKING_FILE"
-        echo "- Removed"
-        return 0
-    fi
-
-    if grep -Eq "^$val1\s+" "$CLOAKING_FILE" || grep -Eq "^\S+\.$val1\s+" "$CLOAKING_FILE"; then
-        echo "! Already added"
-        return 1
-    fi
-    if [ -f "$GLOBAL_CLOAKING_FILE" ]; then
-        if grep -Eq "^$val1\s+" "$GLOBAL_CLOAKING_FILE" || grep -Eq "^\S+\.$val1\s+" "$GLOBAL_CLOAKING_FILE"; then
-            echo "! Domain or subdomain already exists. Aborted"
-            return 1
-        fi
-    fi
-
-    printf '%s\n' "$line" >> "$CLOAKING_FILE"
-    echo "- Added"
-    return 0
-}
-
-clear_dnscrypt_files() {
-    dnscrypt_dir="$MODPATH/dnscrypt"
-    blocked_ips_url="https://raw.githubusercontent.com/sevcator/zapret-pocket/refs/heads/main/module/dnscrypt/blocked-ips.txt"
-
-    mkdir -p "$dnscrypt_dir"
-
-    local status=0
-    for file in allowed-names.txt allowed-ips.txt cloaking-rules.txt blocked-names.txt; do
-        target="$dnscrypt_dir/$file"
-        if : > "$target"; then
-            echo "- Cleared $file"
-        else
-            echo "! Failed to clear $file"
-            status=1
-        fi
-    done
-
-    tmp_file="$dnscrypt_dir/blocked-ips.txt.tmp"
-    if download_with_curl "$blocked_ips_url" "$tmp_file"; then
-        mv "$tmp_file" "$dnscrypt_dir/blocked-ips.txt"
-        echo "- Updated blocked-ips.txt"
-        return $status
-    else
-        rm -f "$tmp_file"
-        echo "! Failed to update blocked-ips.txt"
-        return 1
-    fi
-}
-
 unknown_command() {
     echo "! Unknown command: $1"
     return 1
@@ -534,7 +375,5 @@ case "$1" in
     custom)     custom "$2" ;;
     import-strategy) import_strategy "$2" ;;
     exclude)    exclude "$2" ;;
-    cloaking)   cloaking "$2" "$3" ;;
-    clear-dnscrypt|clear-dnscrypt-files) clear_dnscrypt_files ;;
     *)          unknown_command "$1" ;;
 esac
