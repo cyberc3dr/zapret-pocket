@@ -7,7 +7,7 @@ config="$config --filter-tcp=443 --hostlist=$MODPATH/list/custom.txt --hostlist=
 
 config="$config --filter-udp=80,443 --hostlist=$MODPATH/list/default.txt --hostlist=$MODPATH/list/reestr.txt --hostlist=$MODPATH/list/custom.txt --hostlist-exclude=$MODPATH/list/exclude.txt --dpi-desync=fake --dpi-desync-repeats=11 --dpi-desync-fake-quic=$MODPATH/fake/quic_initial_www_google_com.bin --new"
 
-config="$config --filter-tcp=443 --ipset=$MODPATH/ipset/ipset-v4.txt --ipset=$MODPATH/ipset/ipset-v6.txt --ipset=$MODPATH/ipset/custom.txt --ipset-exclude=$MODPATH/ipset/exclude.txt --dpi-desync=fake --dpi-desync-fake-tls-mod=none --dpi-desync-repeats=6 --dpi-desync-fooling=badseq --dpi-desync-badseq-increment=2 --new"
+config="$config --filter-tcp=443 --ipset=$MODPATH/ipset/ipset-v4.txt --ipset=$MODPATH/ipset/ipset-v6.txt --ipset=$MODPATH/ipset/custom.txt --ipset-exclude=$MODPATH/ipset/exclude.txt --hostlist-exclude=$MODPATH/list/exclude.txt --dpi-desync=fake --dpi-desync-fake-tls-mod=none --dpi-desync-repeats=6 --dpi-desync-fooling=badseq --dpi-desync-badseq-increment=2 --new"
 
 config="$config --filter-udp=443 --ipset=$MODPATH/ipset/ipset-v4.txt --ipset=$MODPATH/ipset/ipset-v6.txt --ipset=$MODPATH/ipset/custom.txt --ipset-exclude=$MODPATH/ipset/exclude.txt --dpi-desync=fake --dpi-desync-repeats=11 --dpi-desync-fake-quic=$MODPATH/fake/quic_for_tls_clienthello_18.bin --new"
 
