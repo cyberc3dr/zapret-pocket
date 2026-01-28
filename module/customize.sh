@@ -112,6 +112,9 @@ ui_print "- Disabling Private DNS"
 settings put global private_dns_mode off
 ui_print "- Disabling Tethering Hardware Acceleration"
 settings put global tether_offload_disabled 1
+mkdir -p "$MODPATH/config"
+echo "0" > "$MODPATH/config/status"
+sh "$MODPATH/update-description.sh" > /dev/null 2>&1
 ui_print "* sevcator.t.me ! sevcator.github.io *"
 ui_print "* サポートありがとうございます!!"
 if [ -d "$MODUPDATEPATH" ]; then

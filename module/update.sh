@@ -22,9 +22,9 @@ read_link_config() {
     printf '%s\n' "$default_value"
 }
 
-CUSTOMLINKIPSETV4=$(read_link_config "https://raw.githubusercontent.com/sevcator/zapret-lists/refs/heads/main/ipset-v4.txt" ipset-v4-link custom-ipv4-ranges-url)
-CUSTOMLINKIPSETV6=$(read_link_config "https://raw.githubusercontent.com/sevcator/zapret-lists/refs/heads/main/ipset-v6.txt" ipset-v6-link custom-ipv6-ranges-url)
-CUSTOMLINKREESTR=$(read_link_config "https://raw.githubusercontent.com/sevcator/zapret-lists/refs/heads/main/reestr_filtered.txt" reestr-link custom-rkn-registry-url)
+CUSTOMLINKIPSETV4=$(read_link_config "https://raw.githubusercontent.com/bol-van/rulist/refs/heads/main/reestr_smart4.txt" ipset-v4-link custom-ipv4-ranges-url)
+CUSTOMLINKIPSETV6=$(read_link_config "https://raw.githubusercontent.com/bol-van/rulist/refs/heads/main/reestr_smart6.txt" ipset-v6-link custom-ipv6-ranges-url)
+CUSTOMLINKREESTR=$(read_link_config "https://raw.githubusercontent.com/bol-van/rulist/refs/heads/main/reestr_hostname_resolvable.txt" reestr-link custom-rkn-registry-url)
 
 PREDEFINED_LIST_FILES="reestr.txt default.txt google.txt"
 PREDEFINED_IPSET_FILES="ipset-v4.txt ipset-v6.txt"

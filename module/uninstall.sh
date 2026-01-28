@@ -109,4 +109,7 @@ for chain in PREROUTING POSTROUTING; do
     remove_rules_matching ip6tables mangle "$chain" "NFQUEUE num 200"
 done
 
+mkdir -p "$MODPATH/config"
+echo "1" > "$MODPATH/config/status"
+
 exit 0

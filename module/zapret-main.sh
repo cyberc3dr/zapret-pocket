@@ -4,6 +4,14 @@ UPDATEONSTART=$(cat "$MODPATH/config/update-on-start" 2>/dev/null || echo "1")
 IPV6ENABLE=$(cat "$MODPATH/config/ipv6-enable" 2>/dev/null || echo "0")
 mkdir -p "$MODPATH/config" "$MODPATH/list" "$MODPATH/ipset"
 
+# Инициализируем статус если его еще нет
+if [ ! -f "$MODPATH/config/status" ]; then
+    echo "0" > "$MODPATH/config/status"
+fi
+
+# Обновляем description модуля
+sh "$MODPATH/update-description.sh" > /dev/null 2>&1 &
+
 migrate_legacy_link() {
     legacy="$MODPATH/config/$1"
     current="$MODPATH/config/$2"

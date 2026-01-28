@@ -35,9 +35,9 @@ read_link_config() {
 
 CURRENTSTRATEGY=$(cat "$MODPATH/config/current-strategy" 2>/dev/null || echo "Unknown")
 UPDATEONSTART=$(cat "$MODPATH/config/update-on-start" 2>/dev/null || echo "1")
-CUSTOMLINKIPSETV4=$(read_link_config "https://raw.githubusercontent.com/sevcator/zapret-lists/refs/heads/main/ipset-v4.txt" ipset-v4-link custom-ipv4-ranges-url)
-CUSTOMLINKIPSETV6=$(read_link_config "https://raw.githubusercontent.com/sevcator/zapret-lists/refs/heads/main/ipset-v6.txt" ipset-v6-link custom-ipv6-ranges-url)
-CUSTOMLINKREESTR=$(read_link_config "https://raw.githubusercontent.com/sevcator/zapret-lists/refs/heads/main/reestr_filtered.txt" reestr-link custom-rkn-registry-url)
+CUSTOMLINKIPSETV4=$(read_link_config "https://raw.githubusercontent.com/bol-van/rulist/refs/heads/main/reestr_smart4.txt" ipset-v4-link custom-ipv4-ranges-url)
+CUSTOMLINKIPSETV6=$(read_link_config "https://raw.githubusercontent.com/bol-van/rulist/refs/heads/main/reestr_smart6.txt" ipset-v6-link custom-ipv6-ranges-url)
+CUSTOMLINKREESTR=$(read_link_config "https://raw.githubusercontent.com/bol-van/rulist/refs/heads/main/reestr_hostname_resolvable.txt" reestr-link custom-rkn-registry-url)
 IPV6ENABLE=$(cat "$MODPATH/config/ipv6-enable" 2>/dev/null || echo "0")
 NETWORKTWEAKS=$(cat "$MODPATH/config/network-tweaks" 2>/dev/null || echo "0")
 BYPASSCALLS=$(cat "$MODPATH/config/bypass-calls" 2>/dev/null || echo "0")

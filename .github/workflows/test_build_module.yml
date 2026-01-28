@@ -224,6 +224,7 @@ jobs:
           version_code=$(echo "${version}" | sed 's/[^0-9]//g')
           echo "version=${version}" >> $GITHUB_ENV
           echo "versionCode=${version_code}" >> $GITHUB_ENV
+          echo "status=🧪 testing" >> $GITHUB_ENV
           echo version=${version}
           echo versionCode=${version_code}
           
@@ -243,7 +244,7 @@ jobs:
           echo "version=Test build" >> module.prop
           echo "versionCode=10" >> module.prop
           echo "author=sevcator, t.me/nigga2011, GAME-OVER-op, bol-van, DNSCrypt, ImMALWARE, Fenrir-0xFF, Flowseal, LeonMskRu" >> module.prop
-          echo "description=⚡ DPI bypass on Android with additional features" >> module.prop
+          echo "description=⚡ DPI bypass on Android with additional features | Status: ${{ env.status }}" >> module.prop
           echo "updateJson=https://raw.githubusercontent.com/${{ github.repository }}/refs/heads/main/update.json" >> module.prop
 
           cd ..
