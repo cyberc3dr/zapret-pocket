@@ -20,7 +20,7 @@ if [ -f "$MODPATH/module.prop" ]; then
     grep -v "^description=" "$MODPATH/module.prop" > "$MODPATH/module.prop.tmp"
     
     # Добавляем обновленное description
-    echo "description=⚡ DPI bypass on Android with additional features | Status: $STATUS_TEXT" >> "$MODPATH/module.prop.tmp"
+    echo "description=Status: $STATUS_TEXT" >> "$MODPATH/module.prop.tmp"
     
     # Заменяем оригинальный файл
     mv "$MODPATH/module.prop.tmp" "$MODPATH/module.prop"
