@@ -376,7 +376,12 @@
             font-size: 0.85em;
             border: 1px solid var(--border-color);
         }
-        #logs-content-zapret,
+        #logs-content-zapret {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            min-height: 100%;
+        }
         .logs-empty,
         .logs-disabled {
             display: flex;
