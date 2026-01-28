@@ -9,9 +9,6 @@ if [ ! -f "$MODPATH/config/status" ]; then
     echo "0" > "$MODPATH/config/status"
 fi
 
-# Обновляем description модуля
-sh "$MODPATH/update-description.sh" > /dev/null 2>&1 &
-
 migrate_legacy_link() {
     legacy="$MODPATH/config/$1"
     current="$MODPATH/config/$2"
@@ -36,6 +33,10 @@ touch "$MODPATH/list/default.txt"
 touch "$MODPATH/list/exclude.txt"
 touch "$MODPATH/list/google.txt"
 touch "$MODPATH/list/reestr.txt"
+
+# Обновляем description модуля после инициализации файлов
+(sleep 2 && sh "$MODPATH/update-description.sh") > /dev/null 2>&1 &
+
 if [ "$UPDATEONSTART" = "1" ]; then
     . "$MODPATH/update.sh" > /dev/null 2>&1
     sleep 2

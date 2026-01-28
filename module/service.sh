@@ -56,5 +56,5 @@ boot_wait() {
     while [ -z "$(getprop sys.boot_completed)" ]; do sleep 2; done
 }
 boot_wait
-sleep 2
+sleep 5
 . "$MODPATH/zapret-main.sh"
